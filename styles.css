@@ -1,0 +1,86 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url("https://bit.ly/4bcK1Hc");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main {
+  background-color: rgba(227, 193, 173, 0.7); /* More transparent for blur */
+  backdrop-filter: blur(10px); /* Glass effect */
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  width: 90%;
+  max-width: 540px;
+  padding: 2em;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+h1 { margin-bottom: 20px; text-align: center; }
+
+#weather-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#weather-search { display: flex; width: 100%; margin-bottom: 10px; }
+
+#search {
+  border-radius: 5px 0 0 5px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 16px;
+  flex-grow: 1;
+  height: 42px;
+  outline: none;
+}
+
+#submit {
+  border-radius: 0 5px 5px 0;
+  border: none;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  width: 5em;
+  cursor: pointer;
+}
+
+#weather-data {
+  display: none; 
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(5px);
+  border-radius: 8px;
+  padding: 1.5em;
+  margin-top: 20px;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Temperature Glow Classes */
+#weather-data > img {
+  border-radius: 50%;
+  width: 100px;
+  transition: all 0.5s ease;
+}
+
+.hot-glow { background-color: rgba(255, 69, 0, 0.6) !important; box-shadow: 0 0 20px rgba(255, 69, 0, 0.8); }
+.cold-glow { background-color: rgba(0, 191, 255, 0.6) !important; box-shadow: 0 0 20px rgba(0, 191, 255, 0.8); }
+.moderate-glow { background-color: rgba(0, 255, 127, 0.6) !important; box-shadow: 0 0 20px rgba(0, 255, 127, 0.8); }

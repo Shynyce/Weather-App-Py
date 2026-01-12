@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        /* This section makes the background and boxes show up */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #87CEEB; /* Sky Blue Background */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 350px;
+        }
+
+        input {
+            padding: 10px;
+            width: 70%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #weather-data {
+            margin-top: 20px;
+            display: none; /* Starts hidden */
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .temp { font-size: 2rem; font-weight: bold; }
+        .city { font-size: 1.5rem; margin-bottom: 5px; }
+        .date { color: #666; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Weather Search</h2>
+        <input type="text" id="search" placeholder="Enter city...">
+        <button onclick="fetchWeather()">Go</button>
+
+        <div id="weather-data">
+            </div>
+    </div>
+
+    <script>
+        async function fetchWeather() {
+            const searchInput = document.getElementById("search").value;
+            const weatherSection = document.getElementById("weather-data");
+            
+            // 1. PUT YOUR KEY HERE
+            const apiKey = "e82c5172c2d219d3c38ab3690c8f4b94";
+
+            if (!searchInput) return alert("Type a city!");
+
+            try {
+                // Get Lat/Lon
+                const geoUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(searchInput)}&limit=1&appid=${apiKey}`;
+                const geoRes = await fetch(geoUrl);
+                const geoData = await geoRes.json();
+
+                if (geoData.length === 0) {
+                    weatherSection.style.display = "block";
+                    weatherSection.innerHTML = "City not found";
+                    return;
+                }
+
+                // Get Weather
+                const { lat, lon, name } = geoData[0];
+                const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+                const weatherRes = await fetch(weatherUrl);
+                const data = await weatherRes.json();
+
+                // Get Date
+                const now = new Date();
+                const dateString = now.toLocaleDateString([], { weekday: 'long', hour: '2-digit', minute: '2-digit' });
+
+                // Update UI
+                weatherSection.style.display = "flex";
+                weatherSection.innerHTML = `
+                    <div class="city">${name}</div>
+                    <div class="date">${dateString}</div>
+                    <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png">
+                    <div class="temp">${Math.round(data.main.temp)}&deg;C</div>
+                    <div>${data.weather[0].description}</div>
+                `;
+            } catch (err) {
+                alert("Error: Check your API key or connection");
+            }
+        }
+    </script>
+</body>
+</html>
